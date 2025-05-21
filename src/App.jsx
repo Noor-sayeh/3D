@@ -49,7 +49,8 @@ export default function App() {
 
   return (
     <>
-      <Canvas camera={{ position: [0, 0, 10], fov: 40 }}>
+      <Canvas style={{ width: "100vw", height: "100vh" }}
+      camera={{ position: [0, 0, 10], fov: 40 }}>
         <color attach="background" args={["#f0f0f0"]} />
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} />
