@@ -1,90 +1,64 @@
-// GiftBoxPage.jsx
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
-import { useEffect, useRef, useState } from "react";
-import * as THREE from "three";
-
-function GiftBoxModel({ boxColor, lidColor, ribbonColor }) {
-  const { scene } = useGLTF("/models/box.glb");
-  const groupRef = useRef();
-
-  useEffect(() => {
-    console.log("🧩 Traversing gift box model...");
-    scene.traverse((child) => {
-      if (child.isMesh) {
-        console.log("➡️ Mesh name:", child.name);
-
-        if (child.name === "Node1") {
-          child.material = new THREE.MeshStandardMaterial({ color: ribbonColor }); // الشبرة
-        } else if (child.name === "Node2") {
-          child.material = new THREE.MeshStandardMaterial({ color: boxColor  }); // box
-        } else if (child.name === "Node3") {
-          child.material = new THREE.MeshStandardMaterial({ color: lidColor}); // الغطاء
-        }
-      }
-    });
-  }, [scene, boxColor, lidColor, ribbonColor]);
-
-  return <primitive ref={groupRef} object={scene} scale={0.1} position={[0, 0, 0]} />;
-}
+import { OrbitControls } from "@react-three/drei";
+import { useState } from "react";
+import GiftBoxModel from "../models/GiftBoxModel"; // صحح المسار حسب مشروعك
 
 export default function GiftBoxPage() {
-  const [boxColor, setBoxColor] = useState("#FFB8B8");
-const [lidColor, setLidColor] = useState("#FFB8B8");
-const [ribbonColor, setRibbonColor] = useState("#923A3A");
+  const [modelPath, setModelPath] = useState("/models/box.glb");
+  const [boxColor, setBoxColor] = useState("#8D1111");
+  const [lidColor, setLidColor] = useState("#8D1111");
+  const [ribbonColor, setRibbonColor] = useState("#F0EA47");
 
+  const boxOptions = [
+    { name: "Box 1", path: "/models/box.glb" },
+    { name: "Box 2", path: "/models/box2.glb" },
+    { name: "Box 3", path: "/models/box3.glb" },
+   
+  ];
 
   return (
-    <div style={{ width: "100vw", height: "100vh", display: "flex", background: "#f7f7f7" }}>
+    <div style={{ display: "flex", width: "100vw", height: "100vh" }}>
       <div style={{ padding: 20 }}>
-        <label style={{ display: "block", marginBottom: 20 }}>
-          🎁 <b>Box Color:</b>
+        <label>
+          🎁 <b>Box Color:</b><br />
+          <input type="color" value={boxColor} onChange={(e) => setBoxColor(e.target.value)} />
+        </label>
+        <br /><br />
+
+        <label>
+          📦 <b>Lid Color:</b><br />
+          <input type="color" value={lidColor} onChange={(e) => setLidColor(e.target.value)} />
           <br />
-          <input
-            type="color"
-            value={boxColor}
-            onChange={(e) => setBoxColor(e.target.value)}
-            style={{ width: 50, height: 30, marginTop: 5 }}
-          />
+          <button onClick={() => setLidColor(boxColor)} style={{ marginTop: 8 }}>
+            Match Lid to Box
+          </button>
+        </label>
+        <br /><br />
+
+        <label>
+          🎀 <b>Ribbon Color:</b><br />
+          <input type="color" value={ribbonColor} onChange={(e) => setRibbonColor(e.target.value)} />
         </label>
 
-        <label style={{ display: "block", marginBottom: 20 }}>
-  📦 <b>Lid Color:</b>
-  <br />
-  <input
-    type="color"
-    value={lidColor}
-    onChange={(e) => setLidColor(e.target.value)}
-    style={{ width: 50, height: 30, marginTop: 5 }}
-  />
-  <br />
-  <button
-    onClick={() => setLidColor(boxColor)}
-    style={{
-      marginTop: 8,
-      padding: "4px 10px",
-      background: "#923A3A",
-      border: "1px solid #999",
-      borderRadius: 4,
-      cursor: "pointer",
-      fontSize: 12
-    }}
-  >
-    Match Lid to Box
-  </button>
- </label>
-
-
-        <label style={{ display: "block", marginBottom: 20 }}>
-          🎀 <b>Ribbon Color:</b>
-          <br />
-          <input
-            type="color"
-            value={ribbonColor}
-            onChange={(e) => setRibbonColor(e.target.value)}
-            style={{ width: 50, height: 30, marginTop: 5 }}
-          />
-        </label>
+        <div style={{ marginTop: 20 }}>
+          <p><b>Choose Gift Box Model:</b></p>
+          {boxOptions.map((box, i) => (
+            <button
+              key={i}
+              onClick={() => setModelPath(box.path)}
+              style={{
+                marginBottom: 6,
+                backgroundColor: modelPath === box.path ? "#923A3A" : "#ddd",
+                color: modelPath === box.path ? "#fff" : "#000",
+                padding: "6px 10px",
+                borderRadius: 4,
+                border: "1px solid #aaa"
+              }}
+            >
+              {box.name}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div style={{ flex: 1 }}>
@@ -93,6 +67,7 @@ const [ribbonColor, setRibbonColor] = useState("#923A3A");
           <directionalLight position={[5, 5, 5]} />
           <OrbitControls />
           <GiftBoxModel
+            modelPath={modelPath}
             boxColor={boxColor}
             lidColor={lidColor}
             ribbonColor={ribbonColor}
