@@ -10,9 +10,9 @@ export default function App() {
   const [cupModelPath, setCupModelPath] = useState("/models/3d_cup_model_highpoly.glb");
 
   const cupOptions = [
-    { name: "Classic Cup", path: "/models/3d_cup_model_highpoly.glb" },
-    { name: "Plastic Cup", path: "/models/mugblack.glb" },
-    { name: "new Cup", path: "/models/cup3.glb" },
+    { name: "Cozy Cup", path: "/models/3d_cup_model_highpoly.glb" },
+    { name: "Dreamy Cup", path: "/models/mugblack.glb" },
+    { name: "Classic Mug", path: "/models/cup3.glb" },
   ];
 
   // Configurations for each cup model
@@ -35,16 +35,35 @@ export default function App() {
   };
 
   const stickers = [
-    "/stickers/heart.png",
-    "/stickers/flower.png",
+    
     "/stickers/butter1.png",
     "/stickers/butter2.png",
     "/stickers/butter3.png",
-    "/stickers/eng.png",
-    "/stickers/pal.png",
-    "/stickers/cat.webp",
-    "/stickers/cats.png",
+
+    
+
+    "/stickers/stitch.png",
+    "/stickers/stitch2.png",
+    "/stickers/stitch3.png",
+     
+    "/stickers/flower3.png",
+    "/stickers/flower (2).png",
+    "/stickers/flower2.png",
+
+    "/stickers/dad.png",
+    "/stickers/dad2.png",
+    
+    "/stickers/mom.png",
+    
+    "/stickers/happybirthday.png",
+    
     "/stickers/gm.png",
+    "/stickers/pal.png",
+
+    "/stickers/eng.png",
+    "/stickers/cats.png",
+    
+    "/stickers/cat.webp",
   ];
 
   return (
@@ -95,22 +114,35 @@ export default function App() {
         ))}
 
         <p style={{ marginTop: 20 }}>Select a sticker:</p>
-        {stickers.map((url, i) => (
-          <img
-            key={i}
-            src={url}
-            alt="sticker"
-            style={{
-              width: 50,
-              height: 50,
-              border: stickerUrl === url ? "2px solid black" : "1px solid gray",
-              marginBottom: 10,
-              cursor: "pointer",
-              display: "block",
-            }}
-            onClick={() => setStickerUrl(url)}
-          />
-        ))}
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(60px, 1fr))",
+    gap: 10,
+    maxWidth: 220,
+    paddingRight: 10,
+  }}
+>
+  {stickers.map((url, i) => (
+    <img
+      key={i}
+      src={url}
+      alt="sticker"
+      onClick={() => setStickerUrl(url)}
+      style={{
+        width: 50,
+        height: 50,
+        border: stickerUrl === url ? "2px solid black" : "1px solid gray",
+        cursor: "pointer",
+        borderRadius: 8,
+        padding: 2,
+        backgroundColor: "#fff",
+        boxShadow: stickerUrl === url ? "0 0 5px #998BCF" : "none",
+      }}
+    />
+  ))}
+</div>
+
       </div>
     </>
   );

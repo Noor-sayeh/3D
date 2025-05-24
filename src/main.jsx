@@ -7,8 +7,7 @@ import GiftBoxPage from "./pages/GiftBoxPage"; // ✅ تأكدنا إنها مو
 ReactDOM.createRoot(document.getElementById("root")).render( <BrowserRouter> 
 <Routes>
   <Route path="/" element={<App />} />          {/* هذا هو الراوت الرئيسي */}
-  <Route path="/cups" element={<App />} />
-  <Route path="/giftbox" element={<GiftBoxPage />} />
+
 </Routes>
 
 
