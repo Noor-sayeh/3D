@@ -77,83 +77,90 @@ export default function App() {
   ];
 
   return (
-    <>
-      <Canvas style={{ width: "100vw", height: "100vh" }}
-      camera={{ position: [0, 0, 10], fov: 40 }}>
-        <color attach="background" args={["#f0f0f0"]} />
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[5, 5, 5]} />
-        <OrbitControls />
-        <CupModel
-          modelPath={cupModelPath}
-          color={color}
-          stickerUrl={stickerUrl}
-          config={cupConfigs[cupModelPath]}
-        />
-      </Canvas>
+    <div style={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column" }}>
+  
+  {/* 🟣 Top Controls (Color + Cup Type) */}
+  <div style={{ padding: 16 }}>
+    <label>
+      Pick a color:
+      <input
+        type="color"
+        value={color}
+        onChange={(e) => setColor(e.target.value)}
+        style={{ marginBottom: 20, display: "block" }}
+      />
+    </label>
 
-      <div style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}>
-        <label>
-          Pick a color:
-          <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            style={{ marginBottom: 20, display: "block" }}
-          />
-        </label>
+    <p>Select a cup:</p>
+    {cupOptions.map((cup, i) => (
+      <button
+        key={i}
+        onClick={() => setCupModelPath(cup.path)}
+        style={{
+          marginBottom: 5,
+          marginRight: 6,
+          backgroundColor: cupModelPath === cup.path ? "#998BCF" : "white",
+          color: cupModelPath === cup.path ? "white" : "#333",
+          border: "1px solid #ccc",
+          borderRadius: 4,
+          padding: "4px 8px",
+          cursor: "pointer",
+        }}
+      >
+        {cup.name}
+      </button>
+    ))}
+  </div>
 
-        <p>Select a cup:</p>
-        {cupOptions.map((cup, i) => (
-          <button
-            key={i}
-            onClick={() => setCupModelPath(cup.path)}
-            style={{
-              marginBottom: 5,
-              display: "block",
-              backgroundColor: cupModelPath === cup.path ? "#998BCF" : "white",
-              color: cupModelPath === cup.path ? "white" : "#333",
-              border: "1px solid #ccc",
-              borderRadius: 4,
-              padding: "4px 8px",
-              cursor: "pointer",
-            }}
-          >
-            {cup.name}
-          </button>
-        ))}
+  {/* 🟣 Middle 3D Cup View */}
+  <div style={{ flex: 1 }}>
+    <Canvas camera={{ position: [0, 0, 10], fov: 40 }}>
+      <color attach="background" args={["#f0f0f0"]} />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} />
+      <OrbitControls />
+      <CupModel
+        modelPath={cupModelPath}
+        color={color}
+        stickerUrl={stickerUrl}
+        config={cupConfigs[cupModelPath]}
+      />
+    </Canvas>
+  </div>
 
-        <p style={{ marginTop: 20 }}>Select a sticker:</p>
-<div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(60px, 1fr))",
-    gap: 10,
-    maxWidth: 220,
-    paddingRight: 10,
-  }}
->
-  {stickers.map((url, i) => (
-    <img
-      key={i}
-      src={url}
-      alt="sticker"
-      onClick={() => setStickerUrl(url)}
+  {/* 🟣 Bottom Sticker Slider */}
+  <div style={{ padding: "10px 16px", background: "#fff" }}>
+    <p style={{ fontWeight: "bold", marginBottom: 8 }}>Select a sticker:</p>
+    <div
       style={{
-        width: 50,
-        height: 50,
-        border: stickerUrl === url ? "2px solid black" : "1px solid gray",
-        cursor: "pointer",
-        borderRadius: 8,
-        padding: 2,
-        backgroundColor: "#fff",
-        boxShadow: stickerUrl === url ? "0 0 5px #998BCF" : "none",
+        display: "flex",
+        overflowX: "auto",
+        gap: 10,
+        paddingBottom: 10,
       }}
-    />
-  ))}
+    >
+      {stickers.map((url, i) => (
+        <img
+          key={i}
+          src={url}
+          alt="sticker"
+          onClick={() => setStickerUrl(url)}
+          style={{
+            width: 60,
+            height: 60,
+            flex: "0 0 auto",
+            border: stickerUrl === url ? "2px solid #998BCF" : "1px solid gray",
+            borderRadius: 10,
+            cursor: "pointer",
+            padding: 4,
+            backgroundColor: "#fff",
+          }}
+        />
+      ))}
+    </div>
+  </div>
+
 </div>
 
-      </div>
-    </>
   );
 }
