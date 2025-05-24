@@ -3,7 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { useState } from "react";
 import CupModel from "./models/CupModel";
-
+import { useEffect } from "react"; 
 export default function App() {
   const [color, setColor] = useState("#998BCF");
   const [stickerUrl, setStickerUrl] = useState("");
@@ -14,7 +14,17 @@ export default function App() {
     { name: "Dreamy Cup", path: "/models/mugblack.glb" },
     { name: "Classic Mug", path: "/models/cup3.glb" },
   ];
-
+  
+ useEffect(() => {
+  window.getSelectedCupData = function () {
+    const cupName = cupOptions.find((cup) => cup.path === cupModelPath)?.name || "Unknown Cup";
+    return JSON.stringify({
+      cup: cupName,
+      cupColor: color,
+      sticker: stickerUrl,
+    });
+  };
+}, [cupModelPath, color, stickerUrl]);
   // Configurations for each cup model
   const cupConfigs = {
     "/models/3d_cup_model_highpoly.glb": {
